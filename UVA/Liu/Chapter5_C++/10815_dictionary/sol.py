@@ -9,6 +9,7 @@ def work():
                     article += s.lower() ; 
                 else:
                     article += " " ; 
+            article += " " ; 
         except EOFError:
             break ; 
     words = sorted(article.split()) ; 
