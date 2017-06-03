@@ -53,9 +53,41 @@ def work():
         print(w.text) ; 
     return ;
     
+def repr(text):
+    cList = [] ;
+    ans = "" ; 
+    for c in text:
+        cList.append(c.lower()) ; 
+    cList = sorted(cList) ; 
+    for i in range(0, len(cList)):
+        ans += cList[i] ; 
+    return ans ; 
+
+def work2():
+    words = [] ; 
+    count = {} ; 
+    line = input().lstrip() ;
+    while (line != "#"):
+        for w in line.split(' '):
+            if w != '':
+                words.append(w) ; 
+                r = repr(w) ; 
+                if r not in count:
+                    count[r] = 1 ; 
+                else:
+                    count[r] += 1 ; 
+        line  = input() ; 
+
+    ans = [] ; 
+    for w in words:
+        r = repr(w) ; 
+        if count[r] == 1:
+            ans.append(w) ; 
+    for w in sorted(ans):
+        print(w) ; 
 
 def main():
-    work() ; 
+    work2() ; 
     return ; 
 
 
