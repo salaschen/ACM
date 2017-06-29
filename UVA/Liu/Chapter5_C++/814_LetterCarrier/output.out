@@ -1,0 +1,201 @@
+Connection between Boston and NewYork
+     HELO Boston
+     250
+     MAIL FROM:<Ortiz@Boston>
+     250
+     RCPT TO:<Jeter@NewYork>
+     250
+     RCPT TO:<Posada@NewYork>
+     250
+     RCPT TO:<posada@NewYork>
+     550
+     DATA
+     354
+     Yep! We beat you! Chew on this!!!
+     --Big Papi
+     .
+     250
+     QUIT
+     221
+Connection between NewYork and Boston
+     HELO NewYork
+     250
+     MAIL FROM:<Jeter@NewYork>
+     250
+     RCPT TO:<Ortiz@Boston>
+     250
+     DATA
+     354
+     Meeh! We finished first in the division!
+     So who cares!
+     .
+     250
+     QUIT
+     221
+Connection between Boston and NewYork
+     HELO Boston
+     250
+     MAIL FROM:<Ramirez@Boston>
+     250
+     RCPT TO:<Lieber@NewYork>
+     250
+     RCPT TO:<Rivera@NewYork>
+     250
+     DATA
+     354
+     Yeah but pennants fly forever!
+     At least I think that's what they say.
+     MannyBeingManny
+     .
+     250
+     QUIT
+     221
+Connection between Baltimore and Boston
+     HELO Baltimore
+     250
+     MAIL FROM:<Raines@Baltimore>
+     250
+     RCPT TO:<Ortiz@Boston>
+     250
+     DATA
+     354
+     What about us?
+     .
+     250
+     QUIT
+     221
+Connection between Baltimore and NewYork
+     HELO Baltimore
+     250
+     MAIL FROM:<Raines@Baltimore>
+     250
+     RCPT TO:<Rodriguez@NewYork>
+     250
+     DATA
+     354
+     What about us?
+     .
+     250
+     QUIT
+     221
+Connection between Boston and Baltimore
+     HELO Boston
+     250
+     MAIL FROM:<Ortiz@Boston>
+     250
+     RCPT TO:<Raines@Baltimore>
+     250
+     DATA
+     354
+     Yes, what about you?
+     .
+     250
+     QUIT
+     221
+Connection between Toronto and Toronto
+     HELO Toronto
+     250
+     MAIL FROM:<Wells@Toronto>
+     250
+     RCPT TO:<Rios@Toronto>
+     250
+     DATA
+     354
+     I think they are ignoring us completely!
+     .
+     250
+     QUIT
+     221
+Connection between Toronto and Toronto
+     HELO Toronto
+     250
+     MAIL FROM:<Rios@Toronto>
+     250
+     RCPT TO:<Wells@Toronto>
+     250
+     DATA
+     354
+     Hello! Anybody noticing us?
+     We're part of the division, too.
+     .
+     250
+     QUIT
+     221
+Connection between Toronto and Boston
+     HELO Toronto
+     250
+     MAIL FROM:<Rios@Toronto>
+     250
+     RCPT TO:<Ortiz@Boston>
+     250
+     RCPT TO:<Rese@Boston>
+     550
+     DATA
+     354
+     Hello! Anybody noticing us?
+     We're part of the division, too.
+     .
+     250
+     QUIT
+     221
+Connection between Toronto and NewYork
+     HELO Toronto
+     250
+     MAIL FROM:<Rios@Toronto>
+     250
+     RCPT TO:<Jeter@NewYork>
+     250
+     DATA
+     354
+     Hello! Anybody noticing us?
+     We're part of the division, too.
+     .
+     250
+     QUIT
+     221
+Connection between StLouis and Boston
+     HELO StLouis
+     250
+     MAIL FROM:<Walker@StLouis>
+     250
+     RCPT TO:<Ortiz@Boston>
+     250
+     RCPT TO:<Ramirez@Boston>
+     250
+     RCPT TO:<Martinez@Boston>
+     250
+     DATA
+     354
+     There's also a National League, you know...
+     .
+     250
+     QUIT
+     221
+Connection between StLouis and NewYork
+     HELO StLouis
+     250
+     MAIL FROM:<Walker@StLouis>
+     250
+     RCPT TO:<Jeter@NewYork>
+     250
+     DATA
+     354
+     There's also a National League, you know...
+     .
+     250
+     QUIT
+     221
+Connection between Boston and StLouis
+     HELO Boston
+     250
+     MAIL FROM:<Martinez@Boston>
+     250
+     RCPT TO:<Walker@StLouis>
+     250
+     DATA
+     354
+     Yeah, I seem to remember something about that.
+     .
+     250
+     QUIT
+     221
