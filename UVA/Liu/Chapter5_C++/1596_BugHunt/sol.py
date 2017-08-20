@@ -137,7 +137,6 @@ def process_declaration(decl, line):
 	return True ; 
 
 def evaluate(decl, values, exp): # return (boolHasNoError, value) 
-#	print("expression" + " " + exp) ; # debug
 	if isNumber(exp):
 		return (True, int(exp)) ; 
 	elif isExpression(exp):
@@ -166,18 +165,14 @@ def isAssigned(name, offset, decl, values):
 
 def process_assignment(decl, values, line): # return boolIsValidInstruction
 	first, second = line.split("=") ; 
-#	print(first + " and " + second) ; # debug
 	name = line[0] ; 
 	isValid, offset = evaluate(decl, values, first[2:-1]) ; 
-#	print(offset) ; # debug
 	if not isValid: 
 		return False ; 
-#	print(name + " and " + str(offset)) ; # debug
 
 	isValid, assignValue = evaluate(decl, values, second) ; 
 	if not isValid:
 		return False ; 
-#	print(name+str(offset) + "=" + str(assignValue)) ; # debug
 	if not isDeclared(name, offset, decl, values):
 		return False ; 
 	values[name+str(offset)] = assignValue ; 
@@ -192,7 +187,6 @@ def execute_step(decl, values, line):
 		return False; 
 
 def execute_program():
-#	print("---------") ; # debug
 	line = input().strip() ; 
 	if line == ".":
 		return 1 ; 
@@ -201,22 +195,18 @@ def execute_program():
 	cur = 1 ;
 	hasError = False ; 
 	while line != "." and not hasError:
-#		print(line) ; # debug
 		
 		if not execute_step(decl, values, line):
 			hasError = True ; 
 		else:
 			line = input() ;
 			cur += 1 ;
-#		print(decl) ; # debug
-#		print(values) ; # debug
 	if line == "." and not hasError:
 		print(0) ; 
 	elif hasError:
 		print(cur) ; 
 		while line != ".":
 			line = input() ; 
-#	print("---------") ; # debug
 	return 0 ; 
 
 def main():
