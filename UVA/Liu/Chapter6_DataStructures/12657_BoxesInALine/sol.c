@@ -16,26 +16,6 @@ void link(int L, int R, int * left, int *right)
 	left[R] = L ; 
 }
 
-// deprecated
-void reverse(int * left, int * right,  int n)
-{
-	// Tested - Seems OK
-	int i ;
-	for (i=1 ; i <= n ; i++) 
-	{
-		int temp = left[i] ; 
-		left[i] = right[i] ; 
-		right[i] = temp ; 
-	}
-	// treat the special head and tail cases
-	int oldHead = right[0] ; 
-	int oldTail = left[n+1] ;
-	right[oldHead] = n+1 ; 
-	left[oldTail] = 0 ; 
-	right[0] = oldTail ; 
-	left[n+1] = oldHead ; 
-}	
-
 void analyze(int * left, int * right, int n)
 {
 	int i  ; 
@@ -45,7 +25,6 @@ void analyze(int * left, int * right, int n)
 	}
 }
 
-// TODO: Change the way to print when inverse
 void printArray(int * left, int * right, int n) 
 {
 	// analyze(left, right, n) ; // debug
@@ -67,7 +46,6 @@ void printArray(int * left, int * right, int n)
 	printf("\n") ; 
 }
 
-// TODO: Treat the first and last (dummy) nodes as normal
 void move(int * left, int * right, int n, int c, int X, int Y) 
 {
 	if (inv == 1) {
@@ -103,10 +81,8 @@ int isAdjacent(int * left, int * right, int X, int Y)
 		return 1 ; 
 }
 
-// DONE: treat the first and last (dummy) node as normal
 void swap(int * left, int * right, int n, int X, int Y)
 {
-
 	// swap when X and Y are NOT adjacent
 	if (isAdjacent(left, right, X, Y) != 0)
 	{
@@ -190,29 +166,12 @@ int work(int Case)
 	printf("Initial: ") ; // debug
 	printArray(left, right, n) ; // debug
 #endif
-
 	// process commands.
 	for (i=0 ; i < m ; i++) {
 		int c, X, Y ;
 		scanf("%d", &c) ;
 		if (c == 4) {
-			// reverse(left, right, n) ; 
-		
 			inv = (inv + 1) % 2 ; 
-			/**
-			int oldHead = right[0] ; 
-			int oldTail = left[n+1] ; 
-			right[0] = oldTail ; 
-			left[n+1] = oldHead ; 
-			if (inv == 0) {
-				right[oldHead] = n+1 ; 
-				left[oldTail] = 0 ; 
-			}
-			else {
-				left[oldHead] = n+1 ; 
-				right[oldTail] = 0 ; 
-			}
-			*/
 #ifdef DEBUG
 			printf("cmd: %d\n", c) ; // debug
 #endif
