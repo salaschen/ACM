@@ -16,6 +16,7 @@ void link(int L, int R, int * left, int *right)
 	left[R] = L ; 
 }
 
+// deprecated
 void reverse(int * left, int * right,  int n)
 {
 	// Tested - Seems OK
@@ -44,16 +45,20 @@ void analyze(int * left, int * right, int n)
 	}
 }
 
+// TODO: Change the way to print when inverse
 void printArray(int * left, int * right, int n) 
 {
-//	analyze(left, right, n) ; // debug
+	// analyze(left, right, n) ; // debug
 	int * temp = left ; 
-	int cur = right[0] ;   
+	int start = 0 ; 
 	if (inv == 1) {
 		left = right ; 
 		right = temp ; 
+		start = n+1 ; 
 	}
+	int cur = right[start] ; 
 	int i ;
+	printf("(inv=%d): ", inv) ; 
 	for (i=1 ; i <= n ; i++) 
 	{
 		printf("%d ", cur) ; 
@@ -62,12 +67,11 @@ void printArray(int * left, int * right, int n)
 	printf("\n") ; 
 }
 
+// TODO: Treat the first and last (dummy) nodes as normal
 void move(int * left, int * right, int n, int c, int X, int Y) 
 {
-	int * temp = left ; 
 	if (inv == 1) {
-		left = right ; 
-		right = temp ; 
+		c = (c == 1)? 2 : 1 ; 
 	}
 	if (c == 1 && left[Y] != X) // Move box X to the left to Y
 	{
@@ -90,38 +94,68 @@ void swapValue(int * buf, int X, int Y)
 	buf[Y] = temp ; 
 }
 
+int isAdjacent(int * left, int * right, int X, int Y)
+{
+	// return 0 if True, 1 if False.
+	if (left[X] == Y || right[X] == Y)
+		return 0 ;
+	else
+		return 1 ; 
+}
+
+// DONE: treat the first and last (dummy) node as normal
 void swap(int * left, int * right, int n, int X, int Y)
 {
-	int * temp = left ; 
-	if (inv == 1)
+
+	// swap when X and Y are NOT adjacent
+	if (isAdjacent(left, right, X, Y) != 0)
 	{
-		left = right ; 
-		right = temp ;
+		right[left[X]] = Y ; 
+		left[right[X]] = Y ; 
+
+		right[left[Y]] = X ; 
+		left[right[Y]] = X ; 
+
+		swapValue(left, X, Y) ; 
+		swapValue(right, X, Y) ; 
 	}
-	// swap left and right neigbours
-	right[left[X]] = Y ; 
-	left[right[X]] = Y ; 
+	else // when X and Y are adjacent
+	{
+		// make X on the left and Y on the right
+		if (left[X] == Y) {
+			int temp = Y ; 
+			Y = X ; 
+			X = temp ; 
+		}
+		int lx = left[X] ; 
+		int ry = right[Y] ; 
+		left[ry] = X ; 
+		right[lx] = Y ; 
 
-	right[left[Y]] = X ; 
-	left[right[Y]] = X ; 
+		right[X] = ry ; 
+		left[X] = Y ; 
+		right[Y] = X ;
+		left[Y] = lx ; 
+	}
 
-	swapValue(left, X, Y) ; 
-	swapValue(right, X, Y) ; 
 }
 
 int left[100010] ;
 int right[100010] ;
 
+// DONE: treat the first and last dummy node as normal
 long long calculate(int * left, int * right, int n)
 {
 	long long result = 0 ; 
-	int cur = right[0] ;
+	int start = 0 ;
 	int * temp = left ; 
    	if (inv == 1)
 	{
 		left = right ; 
 		right = temp ; 
+		start = n+1 ;
 	}	
+	int cur = right[start] ; 
 	int i ;
 	for (i=1 ; i <= n ; i++)
 	{
@@ -152,7 +186,10 @@ int work(int Case)
 	left[0] = -1 ; 
 	right[0] = 1 ;
 
+#ifdef DEBUG
+	printf("Initial: ") ; // debug
 	printArray(left, right, n) ; // debug
+#endif
 
 	// process commands.
 	for (i=0 ; i < m ; i++) {
@@ -162,6 +199,7 @@ int work(int Case)
 			// reverse(left, right, n) ; 
 		
 			inv = (inv + 1) % 2 ; 
+			/**
 			int oldHead = right[0] ; 
 			int oldTail = left[n+1] ; 
 			right[0] = oldTail ; 
@@ -174,12 +212,16 @@ int work(int Case)
 				left[oldHead] = n+1 ; 
 				right[oldTail] = 0 ; 
 			}
-
-			printf("%d\n", c) ; // debug
+			*/
+#ifdef DEBUG
+			printf("cmd: %d\n", c) ; // debug
+#endif
 		}
 		else {
 			scanf("%d %d\n", &X, &Y) ; 
-			printf("%d %d %d\n", c, X, Y) ; // debug
+#ifdef DEBUG
+			printf("cmd: %d %d %d\n", c, X, Y) ; // debug
+#endif
 			switch(c) {
 				case 1:
 				case 2:
@@ -190,10 +232,15 @@ int work(int Case)
 					break ;
 			} ; 
 		}
+#ifdef DEBUG
 		printArray(left, right, n) ; // debug
+#endif
 	}
 
+#ifdef DEBUG	
+	printf("final: ") ; // debug
 	printArray(left, right, n) ; // debug
+#endif 
 
 	long long result = calculate(left, right, n) ; 
 	printf("Case %d: %lld\n", Case, result) ; 
