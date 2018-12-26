@@ -7,30 +7,34 @@ Update 1: change from list representation to string representation.
 Update 2: change heuristic to double function
 Update 3: change heuristic to number of numbers with a *wrong* after number
 '''
-import heapq ;
-import math ;
+import heapq
+import math
+
 def work(Case):
     n = int(input()) ;
     if n == 0:
         return 1 ;
     original = [num for num in input().split()] ;
     start = "" ;
+    # print('original:', original) ; # debug
+    right = dict(); 
+    for i in range(1, 9):
+        right[str(i)] = str(i+1); 
+    right['9'] = None ;
+
     for i in range(0, len(original)):
         start += original[i] ; 
-    result = search(start, n) ; 
+    result = search(start, n, right) ; 
+    
     print("Case {0}: {1}".format(Case, result)) ;
     return 0 ;
 
-lright = [str(n+1) for n in range(0, 9)] ;
-right = dict(); 
-for i in range(1, len(lright)):
-    right[str(i)] = lright[i] ; 
-right['9'] = None ;
-
 class Node:
-    def __init__(self, ordering, dist):
+    def __init__(self, ordering, dist, right):
         self.ordering = ordering; 
+        self.n = len(self.ordering) ; 
         self.dist = dist ; 
+        self.right = right ; 
         self.hdist = self.heuristic(); 
     
     def __lt__(self, other):
@@ -38,13 +42,13 @@ class Node:
 
     def heuristic(self):
         result = 0 ; 
-        global right ;
-        for i in range(0, 8):
-            if self.ordering[i+1] != right[self.ordering[i]]:
+        for i in range(0, self.n-1):
+            if self.ordering[i+1] != self.right[self.ordering[i]]:
                 result += 1 ;
-        if self.ordering[8] != '9':
+        if self.ordering[self.n-1] != str(self.n):
             result += 1 ; 
-        return result / 3 ; 
+
+        return result/3 ; 
 
     def __str__(self):
         return self.ordering+', dist='+str(self.dist)+', hdist='+str(self.hdist) ;
@@ -84,8 +88,8 @@ def TestBFS():
     print('goal:', cur) ;
     return ;
 
-def search(original, n):
-    original = Node(original, 0) ;
+def search(original, n, right):
+    original = Node(original, 0, right) ;
     queue = [] ; 
     heapq.heappush(queue, original) ;
     goal = "" ; 
@@ -108,9 +112,9 @@ def search(original, n):
             children = expand(cur.ordering, n) ;
             for successor in children:
                 if successor not in seen:
-                    # parent[successor] = cur.ordering ; # debug
-                    node = Node(successor, cur.dist+1) ;
+                    node = Node(successor, cur.dist+1, right) ;
                     seen.add(successor) ; 
+                    # if (n-1-(cur.dist+1))*3 > node.hdist:
                     heapq.heappush(queue, node); 
     return None ;
 
@@ -121,8 +125,8 @@ def expand(original, n):
     return a list of new orderings(string) 
     '''
     result = [] ; 
-    #seen = set() ;
-    #seen.add(original) ; 
+    # seen = set() ;
+    # seen.add(original) ; 
     for l in range(1, n):
         # l is the length of the string to be moved.
         for st in range(0, n-1):
@@ -157,7 +161,7 @@ def main():
     solve() ; 
     # TestBFS() ; 
     # TestExpand() ;
-    return ; 
+    return 0; 
 
 if __name__ == "__main__":
     main() ; 
