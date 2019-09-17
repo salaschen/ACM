@@ -14,6 +14,43 @@ class Node:
 
 class Solution:
     def connect(self, root):
+        cur = root ; # head of the current level. 
+        head = None ; # the head of the next level, will stay the same.
+        prev = None ; # the leading node the next level, will keep moving.
+        while cur is not None:
+
+            # the left branch of the cur
+            if cur.left != None:
+                if head is None:
+                    head = cur.left ; 
+                    prev = cur.left ; 
+                else:
+                    # because head is not empty, so prev cannot be empty as well.
+                    prev.next = cur.left ; 
+                    prev = cur.left ; 
+
+            # the right branch of the cur
+            if cur.right != None:
+                if head is None:
+                    head = cur.right ; 
+                    prev = cur.right ; 
+                else:
+                    prev.next = cur.right ; 
+                    prev = cur.right ; 
+
+            # now jump to the next node.
+            # try on the same level first.
+            cur = cur.next ; 
+            # if the current level is exhausted, jump to the next level.
+            if cur is None:
+                cur = head ; 
+                head, prev = None, None ; 
+
+        return root ; # END of function.
+
+
+    # old recursive version that uses too much memory. 
+    def connectOld(self, root):
         self.createLink(None, root) ; 
         return root;
 
@@ -56,7 +93,6 @@ class Solution:
         self.createLink(node, node.right) ; 
         self.createLink(node, node.left) ; 
         return ;
-
 
 # return the root node of the tree
 # for debug purposes
