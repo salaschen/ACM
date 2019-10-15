@@ -9,17 +9,10 @@ class Solution:
         result = list(filter(lambda p: 0<= p[0] < N and 0 <= p[1] < N, result)) ;  
         return result;
 
-    # old solution
-    def maxDistance2(self, grid):
-        # filter out the non-water and non-land conditions.
-        if sum(list(map(lambda lst: lst.count(1), grid))) == 0:
-            return -1 ; 
-        if sum(list(map(lambda lst: lst.count(0), grid))) == 0:
-            return -1 ; 
+    # new solution
+    def maxDistance(self, grid):
 
         # record the distance.
-        distance = dict();
-        visited = set() ; 
         N = len(grid) ; 
         
         queue = collections.deque() ;
@@ -30,23 +23,45 @@ class Solution:
             for j in range(N):
                 if grid[i][j] == 1:
                     queue.append((i,j,0)) ; 
-                    visited.add((i,j)) ; 
+
+        if len(queue) == N*N or len(queue) == 0:
+            return -1 ; 
 
         # go through the queues
+        level = 0 ; 
         while len(queue) > 0:
             x,y, d = queue.popleft() ; 
-            distance[(x,y)] = d ; 
-            if d > maxDist:
-                maxDist = d ; 
-            adj = self.getAdj((x,y), N) ;
-            for r,c in adj:
-                if (r,c) not in visited:
-                    queue.append((r,c,d+1)) ; 
-                    visited.add((r,c)) ; 
+            level = d ; 
+            # adj = self.getAdj((x,y), N) ;
+            for i,j in [(0,-1),(0,1),(1,0),(-1,0)]:
+                xi,yj = i+x,y+j ; 
+                if 0<= xi < N and 0 <= yj < N and grid[xi][yj] == 0:
+                    queue.append((xi,yj,d+1)) ; 
+                    grid[xi][yj] = 1 ; 
 
+        maxDist = level ; 
         return maxDist; 
 
-    def maxDistance(self, grid):
+    
+    # someone else's solution
+    def maxDistanceBase(self, grid) :
+        m,n = len(grid), len(grid[0])
+        q = collections.deque([(i,j) for i in range(m) for j in range(n) if grid[i][j] == 1])    
+        if len(q) == m * n or len(q) == 0: return -1
+        level = 0
+        while q:
+            size = len(q)
+            for _ in range(size):
+                i,j = q.popleft()
+                for x,y in [(1,0), (-1, 0), (0, 1), (0, -1)]:
+                    xi, yj = x+i, y+j
+                    if 0 <= xi < m and 0 <= yj < n and grid[xi][yj] == 0:
+                        q.append((xi, yj))
+                        grid[xi][yj] = 1
+            level += 1;
+        return level-1 ;
+    
+    def maxDistanceOld2(self, grid):
         # use a more direct brutal-force method.
         N = len(grid) ; 
         islands = [] ; 
@@ -111,7 +126,7 @@ def timeSolRun(sol, grid):
 
 # compare the maxDistance one to maxDistance2 (old)
 def compare():
-    testSize = 10 ; 
+    testSize = 20 ; 
     # generate all the test cases.
     passed = 0 ; 
     s = Solution() ; 
@@ -119,14 +134,15 @@ def compare():
     for i in range(testSize):
         gridSize = random.randint(3, 100) ; 
         testGrid = genGrid(gridSize) ; 
+        testGrid2 = [x[:] for x in testGrid] ;
         a1,tt1 = timeSolRun(s.maxDistance, testGrid) ; 
-        a2,tt2 = timeSolRun(s.maxDistance2, testGrid) ; 
+        a2,tt2 = timeSolRun(s.maxDistanceBase, testGrid2) ; 
         if a1 == a2:
             passed += 1 ;
         t1 += tt1 ;
         t2 += tt2 ; 
-    print('{0}/{1} passed, v1:{2} seconds, old:{3} seconds.'.\
-            format(passed, testSize, t1, t2)) ;
+    print('{0}/{1} passed, v1:{2:.3} seconds, base :{3:.3} seconds, ratio:{4:.3}.'.\
+            format(passed, testSize, t1, t2, t1/t2)) ;
     return ;
 
 def main():
