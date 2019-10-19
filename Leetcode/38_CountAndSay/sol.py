@@ -3,7 +3,9 @@ Prob: Leetcode 38 - Count and Say
 Level: Easy
 Author： Ruowei Chen
 Date: 19/Oct/2019
-Note: Basically this simple problem is used to help me configure the VS Code on my windows machine.
+Note: 
+    Basically this simple problem is used to help me configure the VS Code on my windows machine.
+    AC and commited.
 '''
 class Solution:
     def countAndSay(self, n: int) -> str:
