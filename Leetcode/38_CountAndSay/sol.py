@@ -7,6 +7,7 @@ Note:
     Basically this simple problem is used to help me configure the VS Code on my windows machine.
     AC and commited.
 '''
+import profile ; 
 class Solution:
     def countAndSay(self, n: int) -> str:
         cur = '1' ; 
@@ -47,4 +48,4 @@ def main():
     return ;
 
 if __name__ == "__main__":
-    main() ; 
+    profile.run('main()') ; 
