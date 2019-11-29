@@ -2,6 +2,7 @@
 Prob: Medium - 3. Longest SubString without Repeating Characters
 Author: Ruowei Chen
 Date: 30/Nov/2019
+Note: AC.
 '''
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
