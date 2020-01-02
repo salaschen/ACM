@@ -7,9 +7,33 @@ Note:
     2) After 3 attemps, finally implement a slow solution.
 '''
 import random 
+import time
 
 class Solution:
     def threeSumClosest(self, nums: [int], target: int) -> int:
+        result = self.threeSumClosestBinary(nums, target); 
+        return result ; 
+
+    # two pointer solution. Suppose to be O(N^2).
+    def threeSumClosestTwoPointer(self, nums:[int], target: int) -> int:
+        nlen = len(nums) ; 
+        if nlen == 0: return None ; 
+        if nlen <= 3: return sum(nums) ; 
+        nums = sorted(nums) ; 
+        result = sum(nums[nlen-3:]); 
+        for i in range(nlen-2):
+            left, right = i+1, nlen-1 ; 
+            while left < right:
+                total = nums[i]+nums[left]+nums[right] ; 
+                if total == target: return total ; 
+                if abs(total-target) < abs(result-target):
+                    result = total ; 
+
+                left += 1 if (total < target) else 0 ; 
+                right -= 1 if (total > target) else 0 ; 
+        return result; 
+
+    def threeSumClosestBinary(self, nums: [int], target: int) -> int:
         result = None ; 
         nlen = len(nums) ; 
         nums = sorted(nums) ; 
@@ -88,15 +112,27 @@ def test():
     size = 200 ; 
     s = Solution() ; 
     Pass = 0 ;
+    binTime = 0.0 ; # millisecond
+    twoTime = 0.0 ; # millisecond
     for i in range(times):
         nums = [random.randint(-1*size, 1*size) for x in range(size)] ; 
         target = random.randint(-5*size, 5*size) ; 
-        expect = bruteForce(nums, target) ; 
-        actual = s.threeSumClosest(nums, target) ; 
+        # expect = bruteForce(nums, target) ; 
+        startTime = time.time() ; 
+        expect = s.threeSumClosest(nums, target) ; 
+        endTime = time.time() ; 
+        binTime += endTime-startTime ; 
+
+        startTime = time.time() ; 
+        actual = s.threeSumClosestTwoPointer(nums, target) ; 
+        endTime = time.time() ; 
+        twoTime += endTime-startTime ; 
         if expect == actual: Pass += 1 ; 
         else:
             print('Error: expect {0}, actual {1}'.format(expect, actual)) ; 
     print('{0}/{1} passed.'.format(Pass, times)) ; 
+    print('binary uses {0:.3} ms, two pointer uses {1:.3} ms'.\
+        format(binTime*1000, twoTime*1000)) ; 
     return ; 
 
 test() ; 
