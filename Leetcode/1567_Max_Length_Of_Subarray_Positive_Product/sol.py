@@ -10,7 +10,38 @@ import random
 import time
 
 class Solution:
+
     def getMaxLen(self, nums: [int]) -> int:
+        curStart = 0
+        result = 0
+        # negIndex = []
+        firstNegInd, lastNegInd = None, None
+        numNeg = 0
+        curLen = 0
+        for i in range(len(nums)):
+            if nums[i] == 0:
+                if numNeg % 2 ==  0:
+                    result = max(curLen, result)
+                else:
+                    result = max(result, curLen+curStart-firstNegInd-1, lastNegInd-curStart)
+                firstNegInd, lastNegInd = None, None
+                curLen = 0
+                curStart = i+1
+                numNeg = 0
+            else:
+                if nums[i] < 0:
+                    if firstNegInd is None:
+                        firstNegInd = i
+                    lastNegInd = i
+                    numNeg += 1
+                curLen += 1
+        if numNeg % 2 == 0:
+            result = max(curLen, result)
+        else:
+            result = max(result, curLen+curStart-firstNegInd-1, lastNegInd-curStart)
+        return result
+
+    def getMaxLenOld(self, nums: [int]) -> int:
         return max(list(map(lambda subarray: self.getMaxSubarray(subarray), self.splitByZero(nums))))
 
     # [int] -> int
@@ -119,35 +150,44 @@ def bruteForce(nums: [int]) -> int:
     return result
 
 def testWithBruteForce():
-    Times = 100
+    Times = 200
     s = Solution()
     Pass = 0
-    bTime, fTime = 0, 0
+    bTime, fTime,oTime = 0, 0, 0
     for i in range(Times):
-        size = random.randint(10, 1000)
+        size = random.randint(100, 10000)
         # generate an random array
-        array = [random.randint(-100, 100) for i in range(size)]
+        array = [random.randint(-1000, 1000) for i in range(size)]
         start = time.time()
-        expect = bruteForce(array)
+        # expect = bruteForce(array)
+        expect = s.getMaxLenOld(array)
         end = time.time()
         bTime += (end - start)
+
         start = time.time()
         result = s.getMaxLen(array)
         end = time.time()
         fTime += (end - start)
-        if result == expect:
+
+        start = time.time()
+        oResult = s.getMaxLenOld(array)
+        end = time.time()
+        oTime += (end-start)
+
+        if result == expect and result == oResult:
             Pass += 1
         else:
             print("array:", array)
             print("expect = {0}, actual = {1}".format(expect, result))
     print("test: {0}/{1} passed".format(Pass, Times))
-    print("brute-force: {0:.2} sec, solution: {1:.2} sec".format(bTime, fTime))
+    print("brute-force: {0:.2} sec, solution: {1:.2} sec, old: {2:.2} sec"\
+            .format(bTime, fTime, oTime))
     return
 
 
 def main():
-    testGetMaxLen()
-    # testWithBruteForce()
+    # testGetMaxLen()
+    testWithBruteForce()
     return
 
 if __name__ == "__main__":
